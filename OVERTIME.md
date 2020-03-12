@@ -1,3 +1,5 @@
 To do:
 
-Complete Undo and Start New Game
+Implement styling
+Fix flickering when showing results
+Refactor code
