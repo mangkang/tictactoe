@@ -1,6 +1,6 @@
-import React from "react";
-import styles from "./start.module.css";
-import clsx from "clsx";
+import React from "react"
+import styles from "./start.module.css"
+import clsx from "clsx"
 
 function Square(props) {
   const getDisplayValue = () => {
@@ -18,7 +18,7 @@ function Square(props) {
           </span>
         )}
       </>
-    );
+    )
   };
 
   return (

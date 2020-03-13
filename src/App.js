@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
-import "./App.css";
-import Squares from "./components/Squares";
-import styles from "./components/start.module.css";
-import clsx from "clsx";
+import React, { useState, useEffect, useRef } from "react"
+import "./App.css"
+import Squares from "./components/Squares"
+import styles from "./components/start.module.css"
+import clsx from "clsx"
 
 function App() {
-  const [board, setBoard] = useState(Array(9).fill(0));
-  const [moveCount, setMoveCount] = useState(0);
-  const [results, setResults] = useState("");
-  const [next, setNext] = useState("X");
+  const [board, setBoard] = useState(Array(9).fill(0))
+  const [moveCount, setMoveCount] = useState(0)
+  const [results, setResults] = useState("")
+  const [next, setNext] = useState("X")
+  const undoRef = useRef(null)
   const initialHistory = [
     {
       board: Array(9).fill(0)
     }
-  ];
-  const [history, setHistory] = useState(initialHistory);
+  ]
+  const [history, setHistory] = useState(initialHistory)
 
   const validCombinations = [
     [0, 1, 2],
@@ -29,82 +30,88 @@ function App() {
 
   useEffect(() => {
     if (moveCount > 0) {
-      updateResults();
+      updateResults()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moveCount]);
 
   const undoMove = () => {
     if (history.length > 1) {
-      let h = history.slice(0);
-      setBoard(h[h.length - 2].board);
-      setHistory(h.slice(0, h.length - 1));
-      setMoveCount(prevCount => prevCount - 1);
-      setResults("");
-      toggleNext();
+      let h = history.slice(0)
+      setBoard(h[h.length - 2].board)
+      setHistory(h.slice(0, h.length - 1))
+      setMoveCount(prevCount => prevCount - 1)
+      setResults("")
+      toggleNext()
     }
   };
 
   const updateResults = endGame => {
-    let winner = getWinner();
+    let winner = getWinner()
     if (winner) {
-      setResults(winner);
+      setResults(winner)
+      undoRef.current.disabled = true
     } else if (moveCount === 9) {
-      setResults("Tied");
+      setResults("Tied")
+      undoRef.current.disabled = true
+
     }
   };
 
   const toggleNext = () => {
-    setNext(next === "X" ? "O" : "X");
+    setNext(next === "X" ? "O" : "X")
   };
 
   const handleClick = v => {
     if (board[v] === 0) {
-      let newBoard = board.slice(0);
-      newBoard[v] = next;
-      setBoard(newBoard);
-      toggleNext();
-      setHistory(() => history.concat([{ board: newBoard }]));
-      setMoveCount(prevCount => prevCount + 1);
+      let newBoard = board.slice(0)
+      newBoard[v] = next
+      setBoard(newBoard)
+      toggleNext()
+      setHistory(() => history.concat([{ board: newBoard }]))
+      setMoveCount(prevCount => prevCount + 1)
     }
   };
 
   const newGame = () => {
-    setBoard(Array(9).fill(0));
-    setResults("");
-    setNext("X");
-    setMoveCount(0);
-    setHistory(initialHistory);
+    setBoard(Array(9).fill(0))
+    setResults("")
+    setNext("X")
+    setMoveCount(0)
+    setHistory(initialHistory)
+    undoRef.current.disabled = false
   };
 
   const getWinner = () => {
     for (let i = 0; i < validCombinations.length; i++) {
-      const [first, second, third] = validCombinations[i];
+      const [first, second, third] = validCombinations[i]
       if (
         board[first] &&
         board[first] !== 0 &&
         board[first] === board[second] &&
         board[second] === board[third]
       ) {
-        return board[first];
+        return board[first]
       }
     }
-    return null;
+    return null
   };
 
   const displayResults = () => {
     if (results !== "") {
-      if (results === "Tied") return <>Result is tied</>;
-      else
-        return (
+      if (results === "Tied") {
+        return <>Result is tied</>
+      }
+      else return (
           <>
-            Winner is{" "}
+            Winner is&nbsp;
             <span className={clsx(results === "O" ? styles.o : styles.x)}>
               {results}
             </span>
           </>
-        );
-    } else return <>&nbsp;</>;
+      )     
+    } 
+    else return <>&nbsp;</>
   };
 
   return (
@@ -122,11 +129,11 @@ function App() {
         <Squares next={next} onClick={handleClick} board={board}></Squares>
         <br />
         <br />
-        <button onClick={undoMove}>Undo Move</button>
+        <button ref={undoRef} onClick={undoMove}>Undo Move</button>
         <button onClick={newGame}>New Game</button>
       </div>
     </div>
-  );
+  )
 }
 
 export default App;

@@ -1,11 +1,11 @@
-import React from "react";
-import Square from "./Square";
-import styles from "./start.module.css";
+import React from "react"
+import Square from "./Square"
+import styles from "./start.module.css"
 
 function Squares(props) {
 
   const clickHandler = v => {
-    props.onClick(v);
+    props.onClick(v)
   };
 
   const drawSquare = (i, v) => {
@@ -15,11 +15,11 @@ function Squares(props) {
         display={v}
         value={i}
       />
-    );
+    )
   };
 
   const drawBoard = () => {
-    let arr = [];
+    let arr = []
     if (props.board !== undefined) {
       for (let i = 0; i < props.board.length; i += 3) {
         arr.push(
@@ -28,10 +28,10 @@ function Squares(props) {
             <>{drawSquare(i + 1, props.board[i + 1])}</>
             <>{drawSquare(i + 2, props.board[i + 2])}</>
           </div>
-        );
+        )
       }
     }
-    return arr;
+    return arr
   };
 
   return (
