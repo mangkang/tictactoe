@@ -1,5 +1,5 @@
-To do:
+To do (implemented in v2 branch):  
 
-Implement styling
-Fix flickering when showing results
-Refactor code
+Implement styling  
+Fix flickering when showing results  
+Refactor code  
