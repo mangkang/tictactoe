@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Squares from "./components/Squares";
 import styles from "./components/start.module.css";
+import clsx from "clsx";
 
 function App() {
   const [board, setBoard] = useState(Array(9).fill(0));
@@ -27,32 +28,29 @@ function App() {
   ];
 
   useEffect(() => {
-      if (moveCount > 0) {
-        updateResults();
-      }
+    if (moveCount > 0) {
+      updateResults();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moveCount]);
 
   const undoMove = () => {
     if (history.length > 1) {
       let h = history.slice(0);
       setBoard(h[h.length - 2].board);
-      setHistory(() => {
-        return h.slice(0, h.length - 1);
-      });
+      setHistory(h.slice(0, h.length - 1));
+      setMoveCount(prevCount => prevCount - 1);
       setResults("");
       toggleNext();
-      setMoveCount(() => moveCount - 1);
-    } else {
-      setHistory(initialHistory);
     }
   };
 
   const updateResults = endGame => {
     let winner = getWinner();
     if (winner) {
-      setResults(winner + " wins.");
+      setResults(winner);
     } else if (moveCount === 9) {
-      setResults("Tied Game");
+      setResults("Tied");
     }
   };
 
@@ -62,21 +60,21 @@ function App() {
 
   const handleClick = v => {
     if (board[v] === 0) {
-      let newBoard = board.slice(0)
-      newBoard[v] = next
+      let newBoard = board.slice(0);
+      newBoard[v] = next;
       setBoard(newBoard);
       toggleNext();
-      setHistory(() => history.concat([{ board: newBoard }]))
-      setMoveCount(() => moveCount + 1)
+      setHistory(() => history.concat([{ board: newBoard }]));
+      setMoveCount(prevCount => prevCount + 1);
     }
   };
 
   const newGame = () => {
-    setBoard(Array(9).fill(0))
-    setResults("")
-    setNext("X")
-    setMoveCount(0)
-    setHistory(initialHistory)
+    setBoard(Array(9).fill(0));
+    setResults("");
+    setNext("X");
+    setMoveCount(0);
+    setHistory(initialHistory);
   };
 
   const getWinner = () => {
@@ -94,15 +92,30 @@ function App() {
     return null;
   };
 
+  const displayResults = () => {
+    if (results !== "") {
+      if (results === "Tied") return <>Result is tied</>;
+      else
+        return (
+          <>
+            Winner is{" "}
+            <span className={clsx(results === "O" ? styles.o : styles.x)}>
+              {results}
+            </span>
+          </>
+        );
+    } else return <>&nbsp;</>;
+  };
+
   return (
     <div className="App">
-      <header>Tic Tac Toe</header>
-      <div>
-        <>{results && <span> Result is {results} </span>}</>
+      <div className={styles.header}>
+        <header>Tic Tac Toe</header>
+        <div>{displayResults()}</div>
       </div>
 
       <div className={styles.nextMove}>
-        <>{next && <span> {next} goes next</span>}</>
+        {next && <span> {next} goes next</span>}
       </div>
 
       <div className={styles.center}>

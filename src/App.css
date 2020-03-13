@@ -43,4 +43,6 @@ html, body, .App, #root {
 
 header {
   padding: 20px;
+  font-size: 20px;
+  font-weight: 600;
 }

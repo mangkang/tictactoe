@@ -4,10 +4,6 @@ import styles from "./start.module.css";
 
 function Squares(props) {
 
-  const getNext = () => {
-    return props.next;
-  };
-
   const clickHandler = v => {
     props.onClick(v);
   };
@@ -15,10 +11,8 @@ function Squares(props) {
   const drawSquare = (i, v) => {
     return (
       <Square
-        content={getNext()}
-        getNext={getNext}
         onClick={clickHandler}
-        cellValue={v}
+        display={v}
         value={i}
       />
     );
