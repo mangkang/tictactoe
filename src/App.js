@@ -62,7 +62,7 @@ function App() {
   };
 
   const handleClick = v => {
-    if (board[v] === 0) {
+    if (board[v] === 0 && results === "") {
       let newBoard = board.slice(0)
       newBoard[v] = next
       setBoard(newBoard)
