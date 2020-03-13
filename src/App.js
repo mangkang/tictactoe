@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
 import "./App.css"
 import Squares from "./components/Squares"
 import styles from "./components/start.module.css"
@@ -9,7 +9,7 @@ function App() {
   const [moveCount, setMoveCount] = useState(0)
   const [results, setResults] = useState("")
   const [next, setNext] = useState("X")
-  const undoRef = useRef(null)
+  const [disableUndo, setDisableUndo] = useState(false)
   const initialHistory = [
     {
       board: Array(9).fill(0)
@@ -50,11 +50,10 @@ function App() {
     let winner = getWinner()
     if (winner) {
       setResults(winner)
-      undoRef.current.disabled = true
+      setDisableUndo(true)
     } else if (moveCount === 9) {
       setResults("Tied")
-      undoRef.current.disabled = true
-
+      setDisableUndo(true)
     }
   };
 
@@ -79,7 +78,7 @@ function App() {
     setNext("X")
     setMoveCount(0)
     setHistory(initialHistory)
-    undoRef.current.disabled = false
+    setDisableUndo(false)
   };
 
   const getWinner = () => {
@@ -129,7 +128,7 @@ function App() {
         <Squares next={next} onClick={handleClick} board={board}></Squares>
         <br />
         <br />
-        <button ref={undoRef} onClick={undoMove}>Undo Move</button>
+        <button disabled={disableUndo} onClick={undoMove}>Undo Move</button>
         <button onClick={newGame}>New Game</button>
       </div>
     </div>
