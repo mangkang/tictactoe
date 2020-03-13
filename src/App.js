@@ -5,18 +5,16 @@ import styles from "./components/start.module.css"
 import clsx from "clsx"
 
 function App() {
-  const [board, setBoard] = useState(Array(9).fill(0))
+  const boardSize = 9
+  const [board, setBoard] = useState(Array(boardSize).fill(0))
   const [moveCount, setMoveCount] = useState(0)
-  const [results, setResults] = useState("")
   const [next, setNext] = useState("X")
   const [disableUndo, setDisableUndo] = useState(false)
-  const initialHistory = [
-    {
-      board: Array(9).fill(0)
-    }
+  const [results, setResults] = useState("")
+  const initialHistory = [ 
+    { board: Array(boardSize).fill(0) }
   ]
   const [history, setHistory] = useState(initialHistory)
-
   const validCombinations = [
     [0, 1, 2],
     [3, 4, 5],
@@ -46,14 +44,19 @@ function App() {
     }
   };
 
-  const updateResults = endGame => {
+  const updateResults = () => {
     let winner = getWinner()
+    let endGame = false
     if (winner) {
       setResults(winner)
-      setDisableUndo(true)
-    } else if (moveCount === 9) {
+      endGame = true
+    } else if (moveCount === boardSize) {
       setResults("Tied")
+      endGame = true
+    }
+    if (endGame) {
       setDisableUndo(true)
+      setNext(null)
     }
   };
 
@@ -73,12 +76,12 @@ function App() {
   };
 
   const newGame = () => {
-    setBoard(Array(9).fill(0))
-    setResults("")
+    setBoard(Array(boardSize).fill(0))
     setNext("X")
     setMoveCount(0)
     setHistory(initialHistory)
     setDisableUndo(false)
+    setResults("")
   };
 
   const getWinner = () => {
@@ -121,7 +124,7 @@ function App() {
       </div>
 
       <div className={styles.nextMove}>
-        {next && <span> {next} goes next</span>}
+        {next && <span> {next} goes next</span>}&nbsp;
       </div>
 
       <div className={styles.center}>
