@@ -24,9 +24,9 @@ function Squares(props) {
       for (let i = 0; i < props.board.length; i += 3) {
         arr.push(
           <div key={i} className={styles.row}>
-            <>{drawSquare(i, props.board[i])}</>
-            <>{drawSquare(i + 1, props.board[i + 1])}</>
-            <>{drawSquare(i + 2, props.board[i + 2])}</>
+            {drawSquare(i, props.board[i])}
+            {drawSquare(i + 1, props.board[i + 1])}
+            {drawSquare(i + 2, props.board[i + 2])}
           </div>
         )
       }
@@ -35,9 +35,7 @@ function Squares(props) {
   };
 
   return (
-    <>
       <div className={styles.board}>{drawBoard()}</div>
-    </>
   );
 }
 

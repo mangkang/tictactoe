@@ -129,9 +129,7 @@ function App() {
 
       <div className={styles.center}>
         <Squares next={next} onClick={handleClick} board={board}></Squares>
-        <br />
-        <br />
-        <button disabled={disableUndo} onClick={undoMove}>Undo Move</button>
+        <button style={{marginTop:"30px"}} disabled={disableUndo} onClick={undoMove}>Undo Move</button>
         <button onClick={newGame}>New Game</button>
       </div>
     </div>
